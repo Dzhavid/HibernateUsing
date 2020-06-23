@@ -1,21 +1,26 @@
 package jm.task.core.jdbc.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.oracle.webservices.internal.api.databinding.DatabindingMode;
 
-@Table
+import javax.persistence.*;
+
+@Entity(name = "User")
+@Table(name = "ba",schema = "baida")
 public class User {
+
     @Id
+    @Column(name = "Id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "Name",nullable = false)
+    //@Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(name = "LastName",nullable = false)
     private String lastName;
 
-    @Column
+    @Column(name = "Age",nullable = false)
     private Byte age;
 
     public User() {
@@ -27,7 +32,6 @@ public class User {
         this.lastName = lastName;
         this.age = age;
     }
-
     public Long getId() {
         return id;
     }
@@ -70,3 +74,4 @@ public class User {
         this.age = age;
     }
 }
+

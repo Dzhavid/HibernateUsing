@@ -37,12 +37,11 @@ public class UserServiceTest {
     @Test
     public void saveUser() {
         try {
+
             userService.dropUsersTable();
             userService.createUsersTable();
             userService.saveUser(testName, testLastName, testAge);
-
             User user = userService.getAllUsers().get(0);
-
             if (!testName.equals(user.getName())
                     || !testLastName.equals(user.getLastName())
                     || testAge != user.getAge()
@@ -70,9 +69,13 @@ public class UserServiceTest {
     @Test
     public void getAllUsers() {
         try {
-            userService.dropUsersTable();
-            userService.createUsersTable();
-            userService.saveUser(testName, testLastName, testAge);
+            try {
+                userService.dropUsersTable();
+                userService.createUsersTable();
+                userService.saveUser(testName, testLastName, testAge);
+            } catch (Exception e) {
+                System.out.println("f");
+            }
             List<User> userList = userService.getAllUsers();
 
             if (userList.size() != 1) {
