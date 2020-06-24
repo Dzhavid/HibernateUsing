@@ -23,7 +23,7 @@ public class Util {
         configuration.addAnnotatedClass(User.class);
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/baida?useUnicode=true&serverTimezone=UTC");
+        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/mydbtest?useUnicode=true&serverTimezone=UTC");
         configuration.setProperty("hibernate.connection.username", "root");
         configuration.setProperty("hibernate.connection.password", "ROOT");
         configuration.setProperty("hibernate.show_sql", "true");
@@ -36,6 +36,21 @@ public class Util {
         builder.applySettings(configuration.getProperties());
         ServiceRegistry serviceRegistry = builder.build();
         return configuration.buildSessionFactory(serviceRegistry);
+    }
+
+    private final String URL = "jdbc:mysql://localhost:3306/baida?useUnicode=true&serverTimezone=UTC";
+    StringBuilder Change_URL = new StringBuilder(URL);
+    private final String USER = "root";
+    private final String PASSWORD = "ROOT";
+    private Connection connection;
+
+    public Connection getConnection(){
+        try{
+            connection = DriverManager.getConnection(Change_URL.toString(), USER, PASSWORD);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return connection;
     }
 
 }

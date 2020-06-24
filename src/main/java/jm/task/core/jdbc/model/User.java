@@ -4,8 +4,8 @@ import com.oracle.webservices.internal.api.databinding.DatabindingMode;
 
 import javax.persistence.*;
 
-@Entity(name = "User")
-@Table(name = "ba",schema = "baida")
+@Entity
+@Table(name = "user",schema = "mydbtest")
 public class User {
 
     @Id
@@ -13,14 +13,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "Name",nullable = false)
+    @Column(name = "Name")
     //@Column(nullable = false)
     private String name;
 
-    @Column(name = "LastName",nullable = false)
+    @Column(name = "LastName")
     private String lastName;
 
-    @Column(name = "Age",nullable = false)
+    @Column(name = "Age")
     private Byte age;
 
     public User() {

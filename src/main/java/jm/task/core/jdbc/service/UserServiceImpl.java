@@ -11,12 +11,9 @@ import org.hibernate.SessionFactory;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    SessionFactory session;
+    SessionFactory session = Util.getSessionFactory();
     UserDaoHibernateImpl userDaoHibernate = new UserDaoHibernateImpl(session);
 
-    public UserServiceImpl() {
-        session = Util.getSessionFactory();
-    }
     public void createUsersTable() {
         userDaoHibernate.createUsersTable();
     }

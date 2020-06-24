@@ -27,13 +27,12 @@ public class UserDaoHibernateImpl implements UserDao {
             Session session = Util.getSessionFactory().openSession();
             Transaction transaction = null;
             transaction = session.beginTransaction();
-            SQLQuery sqlQuery = session.createSQLQuery("CREATE TABLE ba (Id BIGINT auto_increment,Name VARCHAR(10)," +
-                    "LastName VARCHAR(10),Age INT,constraint ba_pk" +
-                    " primary key (Id))");
+            Query sqlQuery = session.createSQLQuery("CREATE TABLE User(Id INT auto_increment primary key ,Name VARCHAR(10)," +
+                    "LastName VARCHAR(10),Age INT)");
             sqlQuery.executeUpdate();
             transaction.commit();
             session.close();
-        } catch (HibernateException e) {
+        } catch (Exception e) {
 
         }
     }
@@ -44,13 +43,12 @@ public class UserDaoHibernateImpl implements UserDao {
             Session session = Util.getSessionFactory().openSession();
             Transaction transaction = null;
             transaction = session.beginTransaction();
-            SQLQuery sqlQuery = session.createSQLQuery("DROP TABLE ba");
+            Query sqlQuery = session.createSQLQuery("DROP TABLE user");
             sqlQuery.executeUpdate();
-            sqlQuery.addEntity(User.class);
             transaction.commit();
             session.close();
 
-        } catch (HibernateException e) {
+        } catch (Exception e) {
 
         }
     }
@@ -59,45 +57,52 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void saveUser(String name, String lastName, byte age) {
         try {
-            Session session = Util.getSessionFactory().openSession();
-            //Transaction transaction = null;
+            Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
-            // User user = new User(name,lastName,age);
             session.save(new User(name, lastName, age));
             transaction.commit();
             session.close();
-        }catch (Exception e){
-
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
     }
 
 
     @Override
     public void removeUserById(long id) {
-
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        session.createQuery("DELETE User WHERE id = " + id);
+        transaction.commit();
+        session.close();
     }
 
 
     @Override
     public List<User> getAllUsers() {
+        List list = null;
         try {
             Session session = Util.getSessionFactory().openSession();
             Transaction transaction = session.beginTransaction();
-            SQLQuery sqlQuery = session.createSQLQuery("SELECT*FROM ba");
-            List<User> list = sqlQuery.list();
+            Query sqlQuery = session.createNativeQuery("SELECT * FROM user", User.class);
+            list = sqlQuery.getResultList();
             transaction.commit();
             session.close();
             return list;
-        }catch (Exception e){
-
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
-        return null;
+        return list;
     }
-
 
 
     @Override
     public void cleanUsersTable() {
-
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("DELETE FROM User ");
+        query.executeUpdate();
+        transaction.commit();
+        session.close();
     }
 }
